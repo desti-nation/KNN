@@ -27,7 +27,7 @@ def load_CIFAR10(file, train = True):
     data = None
     labels = []
     if train == True:
-        for i in range(1, 6):
+        for i in range(1, 2):
             batch_data = unpickle(file + str(i))
             labels += batch_data[b'labels']
             if data is None:
@@ -65,22 +65,42 @@ class NearestNeighbor(object):
                 this_label = train_labels[sorted_indexs[j]]
                 class_count[this_label] += 1
             test_pres[i] = np.argmax(class_count)
-            print('test item = %d, label = %d, pre = %d'%(i, test_labels[i], test_pres[i]))
+            #print('test item = %d, label = %d, pre = %d'%(i, test_labels[i], test_pres[i]))
         return test_pres
     
 if __name__ == '__main__': 
-    train_file = r'.\cifar-10-batches-py\data_batch_'
+    input_file = r'.\cifar-10-batches-py\data_batch_'
     test_file = r'.\cifar-10-batches-py\test_batch'
-    train_data, train_labels = load_CIFAR10(train_file, True)
     
+    input_data, input_labels = load_CIFAR10(input_file, True)
+    train_data = input_data[:-1000, :] #take the 49000 data as train data
+    val_data = input_data[-1000:, :] # take the last 1000 data as the validation data
+    train_labels = input_labels[:-1000]
+    val_labels = input_labels[-1000:]
+
     print(train_data.shape, len(train_labels))
     
     test_data, test_labels = load_CIFAR10(test_file, False)
-    nn = NearestNeighbor()
-    nn.train(train_data, train_labels)
-    test_pres = nn.predict(100, test_data[:100], test_labels[:100])
-    print( 'accurancy = %f' % (np.mean(test_pres == test_labels[:100])) )
     
+    validation_accuracies = []
+    for k in [1, 3, 5, 10, 20, 50, 100]:
+        nn = NearestNeighbor()
+        nn.train(train_data, train_labels)
+        val_pres = nn.predict(k, val_data, val_labels)
+        acc = np.mean(val_pres == val_labels)
+        validation_accuracies.append((k, acc))
+        print( 'k = %d, accurancy = %f' % (k, acc) )
     
+'''
+runfile('D:/cs231n/KNN/kNearesrNeighbor.py', wdir='D:/cs231n/KNN')
+(9000, 3072) 9000
+k = 1, accurancy = 0.218000
+k = 3, accurancy = 0.200000
+k = 5, accurancy = 0.208000
+k = 10, accurancy = 0.212000
+k = 20, accurancy = 0.209000
+k = 50, accurancy = 0.227000
+k = 100, accurancy = 0.228000
+'''
 
 
