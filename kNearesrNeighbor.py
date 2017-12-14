@@ -82,6 +82,7 @@ if __name__ == '__main__':
     
     test_data, test_labels = load_CIFAR10(test_file, False)
     
+    '''
     validation_accuracies = []
     for k in [1, 3, 5, 10, 20, 50, 100]:
         nn = NearestNeighbor()
@@ -90,6 +91,13 @@ if __name__ == '__main__':
         acc = np.mean(val_pres == val_labels)
         validation_accuracies.append((k, acc))
         print( 'k = %d, accurancy = %f' % (k, acc) )
+    '''
+    nn = NearestNeighbor()
+    nn.train(train_data, train_labels)
+    test_pres = nn.predict(100, test_data, test_labels)
+    acc = np.mean(test_pres == test_labels)
+    print( 'accurancy = %f' % (acc) )
+    
     
 '''
 runfile('D:/cs231n/KNN/kNearesrNeighbor.py', wdir='D:/cs231n/KNN')
