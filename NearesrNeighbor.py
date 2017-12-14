@@ -49,7 +49,7 @@ class NearestNeighbor(object):
         self.train_data = train_data
         self.train_labels = train_labels
     
-    def predict(self, test_data):
+    def predict(self, test_data, test_labels):
         num_test = test_data.shape[0]
         test_pres = np.zeros(num_test)
         
@@ -57,20 +57,24 @@ class NearestNeighbor(object):
             #L1 distance
             #distances = np.sum(np.abs(self.train_data - test_data[i, :]), axis = 1)
             #L2 distance
-            distances = np.square(np.sum(np.square(self.train_data - test_data[i, :]), axis = 1))
+            distances = np.sqrt(np.sum(np.square(self.train_data - test_data[i, :]), axis = 1))
             min_index = np.argmin(distances)
             test_pres[i] = self.train_labels[min_index]
+            print('test item = %d, label = %d, pre = %d, dis = %f'%(i, test_labels[i], test_pres[i], distances[min_index]))
         return test_pres
     
 if __name__ == '__main__': 
     train_file = r'.\cifar-10-batches-py\data_batch_'
     test_file = r'.\cifar-10-batches-py\test_batch'
     train_data, train_labels = load_CIFAR10(train_file, True)
+    
+    print(train_data.shape, len(train_labels))
+    
     test_data, test_labels = load_CIFAR10(test_file, False)
     nn = NearestNeighbor()
     nn.train(train_data, train_labels)
-    test_pres = nn.predict(test_data)
-    print( 'accurancy = %f' % (np.mean(test_pres == test_labels)) )
+    test_pres = nn.predict(test_data[:100], test_labels[:100])
+    print( 'accurancy = %f' % (np.mean(test_pres == test_labels[:100])) )
     
     
 
