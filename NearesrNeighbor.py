@@ -6,7 +6,7 @@ Created on Thu Dec 14 15:06:39 2017
 
 envi: win10 python3.6
 
-knn of cs231n http://cs231n.github.io/classification/
+nn of cs231n http://cs231n.github.io/classification/
 
 data_set:CFAIR  http://www.cs.toronto.edu/~kriz/cifar.html
 The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, 
