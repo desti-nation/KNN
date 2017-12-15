@@ -1,10 +1,11 @@
 # KNN 学习笔记
 参考资料：http://cs231n.github.io/linear-classify/
 
-# 文档说明
+## 文档说明
 cifar-10-batches-py 文件夹保存数据
 NearesrNeighbor.py 为近邻算法
 kNearesrNeighbor.py 为k-近邻算法
+最终分类正确率大约25%
 
 ## KNN 算法
 1. 计算 每一个测试集 和 每一个训练集中的样本 的距离（L1, L2, L3）
